@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Personal Task Manager | Tasks</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div th:replace="~{common/header::header}"></div>
+<br><br>
+<div class="container">
+    <h1 class="text-center">Tasks</h1>
+    <div class="d-grid gap-2 d-md-block">
+        <a th:href="@{/createTask}" class="btn btn-sm btn-outline-primary pull-right">Create Task</a>
+        <a th:href="@{/showLatest}" class="btn btn-sm btn-outline-primary pull-right">Show Latest Added</a>
+    </div>
+    <div class="row">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="task, taskStat : ${tasks}">
+                    <td scope="row" th:text="${taskStat.count}"></td>
+                    <td th:text="${task.title}"></td>
+                    <td th:text="${task.description}"></td>
+                    <td th:text="${#dates.format(task.startDate,'dd/MMM/yyyy')}"></td>
+                    <td th:text="${#dates.format(task.endDate,'dd/MMM/yyyy')}"></td>
+                    <td th:text="${task.priority}"></td>
+                    <td th:text="${task.status}"></td>
+                    <td>
+
+                       <div class="d-flex flex-row">
+                           <a
+                                   th:href="@{/tasks/edit/{id}(id=${task.id})}"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   class="p-1"
+                                   title="Edit"><i class="bi bi-pencil-square text-info"></i>
+                           </a>
+                           <a
+                                   th:href="@{/tasks/delete/{id}(id=${task.id})}"
+                                   th:data-confirm-delete="|Are you sure you want to delete this task: '${task.title}?'|"
+                                   onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   class="p-1"
+                                   title="Delete"><i class="bi bi-trash3 text-danger"></i>
+                           </a>
+                           <a th:href="@{/tasks/view/{id}(id=${task.id})}"
+                              data-toggle="tooltip"
+                              data-placement="top"
+                              class="p-1"
+                              title="View Task">
+                               <i class="bi bi-eye text-warning"></i>
+                           </a>
+                       </div>
+
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+    <nav th:if="${totalPages>1}">
+        <div>Total records : [[${totalItems}]]</div>
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <span th:each="i: ${#numbers.sequence(1,totalPages)}">
+                <li class="page-item">
+                     <a class="page-link" th:if = "${currentPage!=i}" th:href="@{'/tasks/' + ${i}}">[[${i}]]</a>
+                </li>
+                <span th:unless="${currentPage!=i}">[[${i}]]</span>
+            </span>
+<!--            <li class="page-item">-->
+<!--                <a class="page-link" th:if = "${currentPage < totalPages}" th:href="@{'/tasks/' + ${totalPages}}">Last</a>-->
+<!--             </li>-->
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+
+
+
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous">
+
+</script>
+<script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+</body>
+</html>

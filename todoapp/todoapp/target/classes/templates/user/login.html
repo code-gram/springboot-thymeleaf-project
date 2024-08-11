@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Personal Task Manager |  Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div th:replace="~{common/header::header}"></div>
+<br><br>
+<div class="container">
+    <div class="row">
+        <h1 class="text-center">User Login</h1>
+
+    </div>
+    <div th:if="${param.success}">
+        <div class="row col-8 offset-md-2">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Success!</strong> You are registered with Task Manager App.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+
+    </div>
+    <div th:if="${param.logout}">
+        <div class="row col-8 offset-md-2">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Success!</strong> You are successfully logged out from Task Manager.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+
+    </div>
+    <div class="row col-8 offset-md-2">
+        <form  method="post" role="form" th:action="@{/authenticate}" >
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Email</label>
+                <input type="text" class="form-control" id="username" name="username" />
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password"/>
+            </div>
+
+
+            <span>New user ? <a th:href="@{/register}">Register Here</a></span>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous">
+
+</script>
+<script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+
+
+</script>
+</body>
+</html>
